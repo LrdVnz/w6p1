@@ -36,7 +36,7 @@ Dopo aver raccolto ed elaborato i dati, e’ il momento di mostrare i risultati 
     SUGGERIMENTO: ti servira’ un ciclo for!
 
 */
-
+//dwdw//
 
 // NON MODIFICARE QUESTO ARRAY!
 const jobs = [
@@ -126,25 +126,73 @@ const jobs = [
   },
 ]; 
 
-let givenTitle = document.getElementById("work-title");
+/* let givenTitle = document.getElementById("work-title");
 givenTitle = givenTitle.value ; 
 let givenLocation = document.getElementById("work-location");
-givenLocation = givenLocation.value; 
+givenLocation = givenLocation.value;  */
 
-let searchJob = (givenTitle, givenLocation) => {
-  let output = {
-     result: [],
-     count: 0, 
-  }
+let userTitle; 
+let userLocation; 
 
-  for(let i = 0; i < jobs.length; i++){
-      if (jobs[i].title.toLowerCase().includes(givenTitle.toLowerCase()) && jobs[i].location.toLowerCase().includes(givenLocation.toLowerCase()) ){
-        output.result.push(jobs[i]); 
-        output.count+= 1; 
-      }
-  }
-  console.log(output);
+  let submitButton = document.getElementById("submit-query");
+  submitButton.addEventListener("click", function(){
+    console.log("I am being clicked senpai !!! >°////°<")
+     userTitle = document.getElementById("work-title");
+     userLocation = document.getElementById("work-location");
+     userTitle = userTitle.value; 
+     userLocation = userLocation.value; 
+     searchJob(userTitle, userLocation);
+     clearTable();
+     showResults();
+  });
 
+let output = {
+  result: [],
+  count: 0, 
 }
 
-searchJob(givenTitle, givenLocation);
+function searchJob(givenTitle, givenLocation) {
+output.result = [];
+output.count = 0; 
+for(let i = 0; i < jobs.length; i++){
+
+     convertedTitle = jobs[i].title.toLowerCase();
+     convertedLocation = jobs[i].location.toLowerCase();
+
+     if (convertedTitle.includes(givenTitle.toLowerCase()) && convertedLocation.includes(givenLocation.toLowerCase()) ){
+        output.result.push(jobs[i]); 
+        output.count+= 1; 
+      }   
+  }
+  console.log(output);
+}
+
+
+/// Creare dei li che abbiano come contenuto due sottosezioni, job description e job location. 
+/// crea tramite un loop per prendere tutti quelli da result 
+/// crea poi un loop di appendchild per appenderli all'ul 
+
+
+let mainListContainer = document.querySelector(".result-table");
+
+function showResults() {
+  for(let i = 0; i < output.result.length; i++){
+    let liContainer = document.createElement("li");
+    let liTitle = document.createElement("div");
+    let liLocation = document.createElement("div");
+    liTitle.innerText = output.result[i].title; 
+    liLocation.innerText = output.result[i].location; 
+    liContainer.appendChild(liTitle);
+    liContainer.appendChild(liLocation);
+    mainListContainer.appendChild(liContainer);
+  }
+}
+
+
+function clearTable() {
+  let childrenArr = mainListContainer.children; 
+  
+  for(let i = 0; i < childrenArr.length; i++){
+    mainListContainer.removeChild(childrenArr[i]);
+  }
+}
