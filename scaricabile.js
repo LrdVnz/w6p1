@@ -133,19 +133,22 @@ givenLocation = givenLocation.value;  */
 
 let userTitle; 
 let userLocation; 
+// aggiungo il listener al tasto invia. 
 
   let submitButton = document.getElementById("submit-query");
   submitButton.addEventListener("click", function(){
-    console.log("I am being clicked senpai !!! >°////°<")
+    // prendo il valore che l'utente ha inserito, per il titolo e la località
      userTitle = document.getElementById("work-title");
      userLocation = document.getElementById("work-location");
      userTitle = userTitle.value; 
      userLocation = userLocation.value; 
+     // richiamo le funzioni per : eseguire la ricerca, eliminare eventuali risultati di una ricerca precedente, mostrare i risultati correnti. 
      searchJob(userTitle, userLocation);
-     clearTable();
+     mainListContainer.textContent = ''
      showResults();
   });
 
+  // l'elemento che contiene il risultato. 
 let output = {
   result: [],
   count: 0, 
@@ -154,6 +157,7 @@ let output = {
 function searchJob(givenTitle, givenLocation) {
 output.result = [];
 output.count = 0; 
+
 for(let i = 0; i < jobs.length; i++){
 
      convertedTitle = jobs[i].title.toLowerCase();
@@ -164,7 +168,6 @@ for(let i = 0; i < jobs.length; i++){
         output.count+= 1; 
       }   
   }
-  console.log(output);
 }
 
 
@@ -176,23 +179,22 @@ for(let i = 0; i < jobs.length; i++){
 let mainListContainer = document.querySelector(".result-table");
 
 function showResults() {
+  // dopo aver salvato i risultati della ricerca nel mio oggetto output, creo per ogni risultato un elemento li
+  // che illustra titolo e posizione. 
+
   for(let i = 0; i < output.result.length; i++){
+    // crea tutti e tre gli elementi. Il container "li" madre e i due div.
     let liContainer = document.createElement("li");
     let liTitle = document.createElement("div");
     let liLocation = document.createElement("div");
+    // modifica il contenuto con il risultato della ricerca.
     liTitle.innerText = output.result[i].title; 
     liLocation.innerText = output.result[i].location; 
+    //aggiungi i sottodiv al li madre. 
     liContainer.appendChild(liTitle);
-    liContainer.appendChild(liLocation);
+    liContainer.appendChild(liLocation);+
+    //aggiungi il li madre al ul. 
     mainListContainer.appendChild(liContainer);
   }
 }
 
-
-function clearTable() {
-  let childrenArr = mainListContainer.children; 
-  
-  for(let i = 0; i < childrenArr.length; i++){
-    mainListContainer.removeChild(childrenArr[i]);
-  }
-}
